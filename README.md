@@ -11,9 +11,12 @@ The role of the frontend is to showcase the latest randomly generated integer pu
 # Hardware Setup
 Download and install [Arduino](https://www.arduino.cc/en/software) IDE. Subsequently, install the following Arduino IDE libraries following the tutorial [here](https://support.arduino.cc/hc/en-us/articles/5145457742236-Add-libraries-to-Arduino-IDE):
 
-1. ArduinoJson by Benoît Blanchon
-2. PubSubClient by Nick O’Leary
-3. esp32 by Espressif Systems, from the Board Manager tab in Arduino IDE
+1. Adafruit GFX Library by Adafruit
+2. Adafruit ILI9341 by Adafruit
+3. ArduinoJson by Benoît Blanchon
+4. PubSubClient by Nick O’Leary
+5. [Install](https://docs.espressif.com/projects/arduino-esp32/en/latest/installing.html) the ESP32 Arduino library. Install the Stable release.
+>>>>>>> 08e9c6a33e4fe75e653bd119d7ff30c9cc5404be
 
 
 

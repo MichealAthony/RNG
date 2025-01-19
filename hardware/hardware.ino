@@ -41,6 +41,7 @@
 
 
 // MQTT CLIENT CONFIG  
+
 static const char* pubtopic      = "620160532";                    // Add your ID number here
 static const char* subtopic[]    = {"620160532_sub","/elet2415"};  // Array of Topics(Strings) to subscribe to
 static const char* mqtt_server   = "127.0.0.1";         // Broker IP address or Domain name as a String 
@@ -49,6 +50,7 @@ static uint16_t mqtt_port        = 1883;
 // WIFI CREDENTIALS
 const char* ssid       = "CWC-2231079_EXT"; // Add your Wi-Fi ssid
 const char* password   = "c4hHyBmqksdy"; // Add your Wi-Fi password 
+
 
 
 
@@ -134,7 +136,11 @@ void vUpdate( void * pvParameters )  {
     for( ;; ) {
           // Task code goes here.   
           // PUBLISH to topic every second.
+<<<<<<< HEAD
           StaticJsonDocument<1000> doc; // Create JSon object
+=======
+          JsonDocument doc; // Create JSon object
+>>>>>>> 08e9c6a33e4fe75e653bd119d7ff30c9cc5404be
           char message[1100]  = {0};
 
           // Add key:value pairs to JSon object
@@ -174,7 +180,11 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
  
   // CONVERT MESSAGE TO JSON
+<<<<<<< HEAD
   StaticJsonDocument<1000> doc;
+=======
+  JsonDocument doc;
+>>>>>>> 08e9c6a33e4fe75e653bd119d7ff30c9cc5404be
   DeserializationError error = deserializeJson(doc, received);  
 
   if (error) {
@@ -199,7 +209,11 @@ void callback(char* topic, byte* payload, unsigned int length) {
     }
 
     // PUBLISH UPDATE BACK TO FRONTEND
+<<<<<<< HEAD
     StaticJsonDocument<768> doc; // Create JSon object
+=======
+    JsonDocument doc; // Create JSon object
+>>>>>>> 08e9c6a33e4fe75e653bd119d7ff30c9cc5404be
     char message[800]  = {0};
 
     // Add key:value pairs to Json object according to below schema
@@ -236,6 +250,7 @@ bool publish(const char *topic, const char *payload){
 //***** Complete the util functions below ******
 
 void Display(unsigned char number){
+<<<<<<< HEAD
   switch(number){
     case 0: 
     /*Complete from 'a' to 'g'*/
@@ -271,6 +286,10 @@ void Display(unsigned char number){
     /*Complete from 'a' to 'g'*/
     break;
   }
+=======
+  /* This function takes an integer between 0 and 9 as input. This integer must be written to the 7-Segment display */
+  
+>>>>>>> 08e9c6a33e4fe75e653bd119d7ff30c9cc5404be
 }
 
 int8_t getLEDStatus(int8_t LED) {
@@ -298,7 +317,11 @@ void GDP(void){
   /* Add code here to calling appropriate function that will display integer to 7-Seg*/
 
   // PUBLISH number to topic.
+<<<<<<< HEAD
   StaticJsonDocument<1000> doc; // Create JSon object
+=======
+  JsonDocument doc; // Create JSon object
+>>>>>>> 08e9c6a33e4fe75e653bd119d7ff30c9cc5404be
   char message[1100]  = {0};
 
   // Add key:value pairs to Json object according to below schema
