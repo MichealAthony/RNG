@@ -12,6 +12,12 @@
 
       <div class="py-14" />
 
+       <!-- Add your MQTT data display here -->
+       <div v-if="payload">
+        <p><strong>Payload Topic:</strong> {{ payloadTopic }}</p>
+        <p><strong>Received Payload:</strong> {{ payload }}</p>
+      </div>
+
       <VRow class="d-flex align-center justify-center">
         <VCol cols="auto">
           <VBtn
@@ -67,16 +73,42 @@
   import { useMqttStore } from '@/store/mqttStore';
   import { ref,reactive, watch, onMounted, onBeforeUnmount } from 'vue';
 
+// Define states for MQTT connection and payload data
+  const mqtt = ref(null);
+  const host = ref("http://localhost.com");  // Broker hostname
+  const port = ref(9002);  // Broker port number
+
+  // Use Mqtt Store
+  const Mqtt = useMqttStore();
+  const { payload, payloadTopic } = storeToRefs(Mqtt);  // Reactive payload and payloadTopic
+
 
 // VARIABLES
 
 
 // FUNCTIONS
 onMounted(()=>{
+  // Connect to the broker
+  console.log("Component mounted, attempting to connect to MQTT broker...");
+
+    Mqtt.connect();
+    setTimeout(() => {
+      // Subscribe to topics after 3 seconds to ensure the connection is established
+      Mqtt.subscribe("620012345_pub");
+Mqtt.subscribe("620012345");
+Mqtt.subscribe("620012345_sub");
+
+    }, 3000);
    
 });
 
 onBeforeUnmount(()=>{ 
+  // Unsubscribe from all topics
+    Mqtt.unsubscribeAll();
   
 });
 </script>
+
+<style scoped>
+/* Add any custom styles here */
+</style>
