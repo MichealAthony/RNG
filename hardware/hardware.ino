@@ -45,12 +45,12 @@
 // MQTT CLIENT CONFIG  
 static const char* pubtopic       = "620160532";                    // Add your ID number here
 static const char* subtopic[]     = {"620160532_sub","/elet2415"};  // Array of Topics(Strings) to subscribe to
-static const char* mqtt_server    = "test.mosquitto.org";                // Broker IP address or Domain name as a String 
+static const char* mqtt_server    = "broker.emqx.io";                // Broker IP address or Domain name as a String 
 static uint16_t mqtt_port         = 1883;
 
 // WIFI CREDENTIALS
-const char* ssid                  = "CWC-2231079_EXT"; // Add your Wi-Fi ssid
-const char* password              = "c4hHyBmqksdy"; // Add your Wi-Fi password 
+const char* ssid                  = "Mike"; // Add your Wi-Fi ssid
+const char* password              = "micheal12"; // Add your Wi-Fi password 
 
 
 
@@ -102,14 +102,7 @@ void setup() {
     WiFi.begin(ssid, password);
 
     // Wait for connection
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(1000);
-        Serial.print(".");
-    }
-
-    Serial.println("\nWi-Fi connected!");
-    Serial.print("IP Address: ");
-    Serial.println(WiFi.localIP()); // Print the IP Address of ESP32
+    
 
 
   // CONFIGURE THE ARDUINO PINS OF THE 7SEG AS OUTPUT
@@ -125,8 +118,9 @@ void setup() {
   pinMode(LED_B, OUTPUT);
   pinMode(BTN_A, INPUT_PULLUP);
 
-  vButtonCheckFunction(); // UNCOMMENT IF USING BUTTONS THEN ADD LOGIC FOR INTERFACING WITH BUTTONS IN THE vButtonCheck FUNCTION
   Display(8);
+  vButtonCheckFunction(); // UNCOMMENT IF USING BUTTONS THEN ADD LOGIC FOR INTERFACING WITH BUTTONS IN THE vButtonCheck FUNCTION
+  //Display(8);
 
 
   initialize();           // INIT WIFI, MQTT & NTP 
@@ -136,16 +130,7 @@ void setup() {
 
 
 void loop() {
-    // put your main code here, to run repeatedly:
-    toggleLED(LED_A);  // Turn LED A on
-    // Turn LED A off
-  delay(1000);
-   /* if (WiFi.status() == WL_CONNECTED) {
-        Serial.println("ESP32 is connected to Wi-Fi.");
-    } else {
-        Serial.println("ESP32 is not connected to Wi-Fi.");
-    }
-    delay(5000); // Check every 5 seconds */
+    
     
 }
 
@@ -163,19 +148,23 @@ void vButtonCheck( void * pvParameters )  {
 
       // Check if the button is pressed (LOW for a pull-up configuration)
         if (digitalRead(BTN_A) == LOW) {
+          delay(500);
+          GDP();
             // Generate a random number between 0 and 9
-            int randomNumber = random(0, 10);
+            //int randomNumber = random(0, 10);
 
             // Display the random number on a 7-segment display
-            Display(randomNumber);
+            //Display(randomNumber);
 
             // Small delay to prevent multiple detections from button bounce
-            vTaskDelay(200 / portTICK_PERIOD_MS);
+            //vTaskDelay(200 / portTICK_PERIOD_MS);
         }
         // then execute appropriate function if a button is pressed  
 
-        vTaskDelay(200 / portTICK_PERIOD_MS);  
+       // vTaskDelay(200 / portTICK_PERIOD_MS);  
     }
+            vTaskDelay(200 / portTICK_PERIOD_MS);  
+
 }
 
 void vUpdate( void * pvParameters )  {
@@ -237,8 +226,8 @@ void callback(char* topic, byte* payload, unsigned int length) {
 
   // PROCESS MESSAGE
   const char* type = doc["type"];
-  Serial.print("Type: ");
-  Serial.println(type);
+  //Serial.print("Type: ");
+  //Serial.println(type);
 
   if (strcmp(type, "toggle") == 0){
     // Process messages with ‘{"type": "toggle", "device": "LED A"}’ Schema
@@ -254,7 +243,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
     }
 
     // PUBLISH UPDATE BACK TO FRONTEND
-    JsonDocument responseDoc; // Create JSon object
+    JsonDocument doc; // Create JSon object
     char message[800]  = {0};
 
     // Add key:value pairs to Json object according to below schema
@@ -268,7 +257,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
     according to schema above
     */
 
-    serializeJson(responseDoc, message);  // Seralize / Covert JSon object to JSon string and store in char* array  
+    serializeJson(doc, message);  // Seralize / Covert JSon object to JSon string and store in char* array  
     publish("620160532", message);    // Publish to a topic that only the Frontend subscribes to.
 
   } 
@@ -279,6 +268,7 @@ bool publish(const char *topic, const char *payload){
      bool res = false;
      try{
         res = mqtt.publish(topic,payload);
+        //Serial.printf("yes\n");
         // Serial.printf("\nres : %d\n",res);
         if(!res){
           res = false;

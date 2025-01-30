@@ -9,7 +9,10 @@ This file creates your application.
 import site 
 
 from app import app, Config,  mongo, Mqtt
-from flask import escape, render_template, request, jsonify, send_file, redirect, make_response, send_from_directory 
+#from flask import escape, render_template, request, jsonify, send_file, redirect, make_response, send_from_directory 
+from markupsafe import escape
+from flask import render_template, request, jsonify, send_file, redirect, make_response, send_from_directory
+
 from json import dumps, loads 
 from werkzeug.utils import secure_filename
 from datetime import datetime,timedelta, timezone
